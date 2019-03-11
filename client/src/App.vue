@@ -7,17 +7,20 @@
       <p class="online">Online: {{users.length}}</p>
     </header>
     <main>
-      <ChatRoom></ChatRoom>
+      <ChatRoom v-bind:messages="messages" @sendMessage="this.sendMessage" />
     </main>
   </div>
 </template>
 
 <script>
 import io from 'socket.io-client';
+import ChatRoom from './components/ChatRoom';
 
 export default {
   name: 'app',
-  components: {},
+  components: {
+    ChatRoom,
+  },
   data() {
     return {
       username: "",
@@ -52,6 +55,10 @@ export default {
 
     },
 
+    sendMessage(message) {
+      this.socket.emit('msg', message);
+    }
+
   },
 
   mounted(){
@@ -83,6 +90,8 @@ export default {
   max-width:768px;
   margin: 0 auto;
   border: solid #84CF6A 1px;
+  padding: 15px;
+  box-sizing: border-box;
 }
 
 

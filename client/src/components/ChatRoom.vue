@@ -2,13 +2,14 @@
   <section class="chat-window">
     <div class="messages">
       <div class="message" v-for="message in messages" :key="message.index">
-        <div class="username">{{message.username}}</div>
+        <div class="username">{{message.username}}:</div>
+        <br />
         <div class="message-text">{{message.msg}}</div>
       </div>
     </div>
-    <form class="input-container" :submit="sendMessage">
+    <form class="input-container" @submit="sendMessage">
       <input type="text" v-model="msg">
-      <button @click="sendMessage" :disabled="!message">Send></button>
+      <button @click="sendMessage" :disabled="!msg">Send ></button>
     </form>
   </section>
 </template>
@@ -24,8 +25,11 @@ export default {
     }
   },
   methods: {
-    sendMessage(){
-      !this.message ? alert("Is this really necessary?") : null;
+    sendMessage() {
+      if (!this.msg) {
+				alert("Please enter a message");
+				return;
+			}
 
       this.$emit('sendMessage', this.msg);
       this.msg = "";
@@ -43,5 +47,52 @@ export default {
   flex-direction: column;
   background-color: #f9f9f9;
   box-shadow: 1px 1px 6px 0px rgba(0, 0, 0, 0.15); 
+
+  .messages {
+    flex: 1;
+    height: 50vh;
+    // border: solid blue 1px;
+    overflow: scroll;
+
+    .message {
+      display: flex;
+      border-bottom: 1px solid #efefef;
+      padding: 10px;
+
+      &:last-of-type {
+        border-bottom: none;
+      }
+
+      .username {
+        width: 100px;
+        margin-right: 15px;
+      }
+
+      .message-text {
+        flex: 1;
+      }
+
+    }
+
+   
+  }
+
+  .input-container {
+    display: flex;
+    // border: solid red 1px;
+    
+    input {
+      flex: 1; 
+      height: 35px;
+      font-size: 18px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 75px;
+      height: 35px;
+      box-sizing: border-box;
+    }
+  }
 }
 </style>
